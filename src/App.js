@@ -1,7 +1,7 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import BookShelf from './components/bookShelf'
+import BookShelfCreator from './components/BookShelfCreator'
 class BooksApp extends React.Component {
   state = {
     showSearchPage: false,
@@ -15,6 +15,8 @@ class BooksApp extends React.Component {
       }
     );
   }
+
+  
   componentDidMount()
   { 
     
@@ -26,20 +28,66 @@ class BooksApp extends React.Component {
       })
       )
     })
+  }
+  
+  changeBookShelf = (targeBookId , newStatus) =>
+  {
+
+    console.log("wewaesewewewewewe",targeBookId,newStatus)
+    this.setState((currentState) => ({
+      books: currentState.books.filter((book) => {
+         //Search for the book in the component state
+        if (book.id === targeBookId)
+        {
+          //Modify its property
+          book.shelf = newStatus;
+        }
+        return book
+      })
+    }))
+     // make API call for the changes 
 
   }
-  currentlyReadingbooks=[];
-  
-  want2ReadBooks = [];
-  readBooks = [];
+ /*  removeContact = (contact) => {
+    this.setState((currentState) => ({
+      contacts: currentState.contacts.filter((c) => {
+        return c.id !== contact.id
+      })
+    }))
+
+    ContactsAPI.remove(contact)
+  }
+  createContact = (contact) => {
+    ContactsAPI.create(contact)
+      .then((contact) => {
+        this.setState((currentState) => ({
+          contacts: currentState.contacts.concat([contact])
+        }))
+      })
+  } */
+
+
+
+
+  // shelfList items represents each shelf and how to filter its book status 
+  shelfList = [
+    {
+      shelfTitle:'Currently Reading',
+      filterBookMethod:'currentlyReading'
+    },
+    {
+      shelfTitle:'Want to Read',
+      filterBookMethod:'wantToRead'
+    },
+    {
+      shelfTitle:'Read',
+      filterBookMethod:'read'
+    }
+  ]
+
   render() {
-    console.log(this.state.books)
-    this.currentlyReadingbooks = this.state.books.filter (book => book.shelf === 'currentlyReading')
-    this.want2ReadBooks = this.state.books.filter (book => book.shelf === "wantToRead")
-    this.readBooks = this.state.books.filter (book => book.shelf === "read")
-    
-    
-    
+    const allCurrBooks = this.state.books
+    console.log('all Books:',this.state.books)  
     return (
       <div className="app">
         {this.state.showSearchPage ? (
@@ -70,16 +118,9 @@ class BooksApp extends React.Component {
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-              <BookShelf 
-              currentlyReadingbooks = {this.currentlyReadingbooks}
-              bookshelfTitle={'Currently Reading'} /> 
-              <BookShelf 
-              currentlyReadingbooks = {this.want2ReadBooks}
-              bookshelfTitle={'Want to Read'} /> 
-              <BookShelf 
-              currentlyReadingbooks = {this.readBooks}
-              bookshelfTitle={'Read'} /> 
-          
+
+          <BookShelfCreator shelfList = {this.shelfList} allBooks = {allCurrBooks} bookShelfChangeListner = {this.changeBookShelf}/>
+
             </div>
             <div className="open-search">
               <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
