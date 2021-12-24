@@ -23,11 +23,12 @@ class BookShelf extends Component
                    books  !== undefined && ( <ol className="books-grid">
                     {  books.map( (book) =>//book.imageLinks.thumbnail book.title book.author 
                       <li key = {book.id}>
-                        <Book bookUrl = {book.imageLinks.thumbnail}
+                        <Book bookUrl = {book.imageLinks && book.imageLinks.thumbnail}
                          bookTitle = {book.title} 
-                         bookAuthors = {book.authors}
+                         bookAuthors = {book.authors && book.authors}
                          bookOptionHandler = {bookShelfChangeListner}
                          bookID = {book.id}
+                         bookShelf = {book.shelf}
                         />
                       </li>
                     )}

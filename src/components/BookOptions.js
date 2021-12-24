@@ -5,16 +5,17 @@ class BookOptions extends Component {
     static propTypes = {
 
         bookID: PropTypes.string.isRequired,
-        handler: PropTypes.func.isRequired
+        handler: PropTypes.func.isRequired,
+        bookShelf: PropTypes.string.isRequired
     }
    
     render() {
-        const { bookID, handler} = this.props
+        const { bookID, handler,bookShelf} = this.props
         return (
 
            
               <div className="book-shelf-changer">
-                <select defaultValue={"move"} onChange={event =>handler(bookID,event.target.value)}>
+                <select defaultValue={bookShelf} onChange={event =>handler(bookID,event.target.value)}>
                   <option value="move" disabled >Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
