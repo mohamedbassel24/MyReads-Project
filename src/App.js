@@ -11,10 +11,8 @@ class BooksApp extends React.Component {
   }
 
 /**
-* @description Represents a book
+* @description Fetch the books after rendering the page.
 * @constructor
-* @param {string} title - The title of the book
-* @param {string} author - The author of the book
 */
   
   componentDidMount()
@@ -30,10 +28,10 @@ class BooksApp extends React.Component {
     })
   }
   /**
-* @description Represents a book
+* @description Change the book shelf from one place to another
 * @constructor
-* @param {string} title - The title of the book
-* @param {string} author - The author of the book
+* @param {string} targeBookId - The book ID for the book whose shelf state is changed
+* @param {string} newStatus - The new Shelf State of the book 
 */
   changeBookShelf = (targeBookId , newStatus) =>
   {
@@ -61,7 +59,22 @@ class BooksApp extends React.Component {
   // this Functio get the book and shelf and concat to bookList and make API update call
   addBookShelf = (searchedBook , newStatus) =>
   {
-
+    let isTheBookExistBefore=false;
+    this.state.books.map(
+      book =>
+      {
+        if(book.id === searchedBook.id)
+        {
+          isTheBookExistBefore=true;
+        }
+        return book
+      }
+    )
+    if(isTheBookExistBefore)
+    {
+      this.changeBookShelf(searchedBook.id,newStatus)
+      return;
+    }
     console.log("Book and this state:",searchedBook,newStatus)
     this.setState((currentState) => ({
       books: currentState.books.concat(searchedBook)
